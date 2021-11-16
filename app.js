@@ -6,6 +6,19 @@ var logger = require("morgan");
 var passport = require("passport");
 var session = require("express-session");
 var PassportLocal = require("passport-local").Strategy;
+var router = express.Router();
+
+// Database
+var admin = require("firebase-admin");
+var serviceAccount = require("./prepanetmindfuldb-firebase-adminsdk-7iiyh-fb8ac1e56f.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://prepanetmindfuldb-default-rtdb.firebaseio.com/"
+});
+
+const db = admin.database();
+
 
 //Import routers
 var loginRouter = require("./routes/login");
@@ -20,6 +33,9 @@ var app = express();
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+
+// Set de db 
+app.set("db", db);
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -74,5 +90,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+
 
 module.exports = app;
