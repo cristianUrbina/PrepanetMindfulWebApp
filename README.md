@@ -1,2 +1,2 @@
 # PrepanetMindfulWebApp
-Aplicación web apra Prepanet Nacional
+Aplicación web para Prepanet Nacional

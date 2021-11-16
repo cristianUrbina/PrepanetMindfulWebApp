@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    block header
+      header.header
+        nav.header-nav
+          ul.header-nav-ul
+            li
+              a(href='/') Inicio
+            li
+              a(href='/cursos') Cursos 
+            li
+              a(href='/registrar-fechas') Registrar fechas
+            li
+              a(href='/registrar-alumno') Registrar alumno
+        img.logo(src="/images/prepanet-logo.png" alt="prepanet-logo")
+    main 
+      block content
+    footer
+      block footer
+        p PrepanetMinful 2021  
+

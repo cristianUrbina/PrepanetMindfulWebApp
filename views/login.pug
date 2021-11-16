@@ -1,0 +1,20 @@
+doctype html
+html(lang='en')
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js", integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj", crossorigin="anonymous")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js", integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV", crossorigin="anonymous")
+    link(rel="stylesheet" href="/stylesheets/login.css")
+    style.
+      p{
+          background-color: yellow;
+        }
+  body
+    h1.main-title Login page
+    form(action="/login" method="POST")
+      input(type="text" name="username" id="username" placeholder="username")
+      input(type="password" name="password" id="password" placeholder="password")
+      input(type="submit" value="Enviar")
+
