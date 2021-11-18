@@ -1,19 +1,20 @@
 const express = require("express");
 const fs = require("fs");
 const csv = require("csv-parser");
+const db = require("../database");
 
-// Database
-var admin = require("firebase-admin");
-var serviceAccount = require("../prepanetmindfuldb-firebase-adminsdk-7iiyh-fb8ac1e56f.json");
+/*// Database*/
+/*var admin = require("firebase-admin");*/
+/*var serviceAccount = require("../prepanetmindfuldb-firebase-adminsdk-7iiyh-fb8ac1e56f.json");*/
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://prepanetmindfuldb-default-rtdb.firebaseio.com/"
-});
+/*admin.initializeApp({*/
+  /*credential: admin.credential.cert(serviceAccount),*/
+  /*databaseURL: "https://prepanetmindfuldb-default-rtdb.firebaseio.com/"*/
+/*});*/
 
-const db = admin.database();
+/*const db = admin.database();*/
 
-let users = [];
+let users = [] ;
 
 function writeToCSVFile(users) {
   const filename = 'output.csv';
@@ -38,7 +39,6 @@ fs.createReadStream("./BD usuarios.csv")
   .pipe(csv())
   .on("data", function(row) {
     const user = {
-      id: row.MATRICULA,
       name: row.NOMBRECOMPLETO,
       campus: row.CAMPUS,
       campus_acronym: row.CLAVECAMPUS,
@@ -46,12 +46,13 @@ fs.createReadStream("./BD usuarios.csv")
       coordinator_email: row.CORREOCOORDINADORPREPANET,
       coordinator_id: row.NOMINACOORDINADORPREPANET
     }
-    db.ref("students").push(user);
-    console.log(user);
-    users.push(user);
+    //console.log(user);
+    users[row.MATRICULA] = user;
   })
   .on("end", function() {
-    console.table(users);
+    //console.table(users);
+    console.log(users);
+    db.ref("students").set(users);
     // TODO: SAVE users data to another file
     writeToCSVFile(users);
   });
