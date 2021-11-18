@@ -6,4 +6,11 @@ block content
     input(type="text" name="firstname" placeholder="firstname")
     input(type="text" name="lastname" placeholder="lastname")
     input(type="submit" value="Send")
+  ul
+    each student in students
+      li
+        a(href=student.id) #{student.name}
+        |  (#{student.id})
 
+    else
+      li Sin estudiantes registrados.

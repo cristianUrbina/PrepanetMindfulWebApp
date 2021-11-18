@@ -19,8 +19,10 @@ admin.initializeApp({
 
 const db = admin.database();
 
+// Global variables
+//app.locals.users = [];
 
-//Import routers
+// Import routers
 var loginRouter = require("./routes/login");
 var indexRouter = require("./routes/index");
 var coursesRouter = require("./routes/courses");

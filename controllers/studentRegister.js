@@ -1,11 +1,23 @@
+//const async = require("async");
+
 exports.show_student_regiter = function(req, res) {
   const db = req.app.get("db");
-  console.log("data here");
-  db.ref("students").once("value", (snapshot) => {
-    const data = snapshot.val();
-    console.log(data);
+  //async.parawlel({
+  function myoperation(callback) {
+    const users = [];
+    db.ref("students").once("value", (snapshot) => {
+      const data = snapshot.val();
+      Object.entries(data).forEach((entry) => {
+        const [key, value] = entry;
+        users.push(value);
+        console.log(users.length);
+      });
+    });
+    callback(users)
+  }
+  myoperation(function(users) {
+    res.render("studentRegister", {students: users});
   });
-  res.render("studentRegister");
 }
 
 exports.register_student = function (req, res) {
