@@ -51,9 +51,21 @@ fs.createReadStream("./BD usuarios.csv")
   })
   .on("end", function() {
     //console.table(users);
-    console.log(users);
+    //console.log(users);
     db.ref("students").set(users);
     // TODO: SAVE users data to another file
     writeToCSVFile(users);
+    db.ref("super_users").set({
+      L00836882: {
+        name: "Ana María Loreto Zuñiga",
+        email: "ana.zuniga@tec.mx",
+        password: "anita",
+      },
+      L00192153: {
+        name: "María del Carmen Pámanes Fernández",
+        email: "mpamanes@tec.mx",
+        password: "mary",
+      }
+    });
   });
 

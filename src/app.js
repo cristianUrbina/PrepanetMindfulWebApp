@@ -8,6 +8,8 @@ var session = require("express-session");
 var PassportLocal = require("passport-local").Strategy;
 var router = express.Router();
 
+require("./passport/local-auth");
+
 // Import routers
 var loginRouter = require("./routes/login");
 var indexRouter = require("./routes/index");
@@ -22,6 +24,8 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+//middlewares
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,25 +35,9 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-passport.use(new PassportLocal(function(username, password, done) {
-  if (username === "usuario" && password === "1234") {
-    return done (null, {id: 1, name: "Coddy"});
-  }
-  done(null, false);
-}));
-
-// Serializacion
-passport.serializeUser(function(user, done){
-   done(null, user.id);
-});
-
-// Deserializacion
-passport.deserializeUser(function(id, done) {
-  done(null, { id: 1, name: "Cody" });
-});
 
 app.use(express.static(path.join(__dirname, "public")));
 

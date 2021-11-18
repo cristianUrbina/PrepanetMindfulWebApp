@@ -1,16 +1,15 @@
 extends layout
 
 block content
-  p NOT IMPLEMENTED YET: studentRegister
   form(action="/registrar-alumno" method="POST")
     input(type="text" name="firstname" placeholder="firstname")
     input(type="text" name="lastname" placeholder="lastname")
     input(type="submit" value="Send")
   ul
-    each student in students
+    each student, id in students
       li
-        a(href=student.id) #{student.name}
-        |  (#{student.id})
+        a(href=`alumno/${id}`) #{student.name}
+        |  (#{id}) 
 
     else
       li Sin estudiantes registrados.

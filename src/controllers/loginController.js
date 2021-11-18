@@ -7,5 +7,5 @@ exports.check_login = function (req, res) {
 
 exports.login = passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/login"
+    failureRedirect: "/login-intruso"
 });
