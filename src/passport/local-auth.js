@@ -33,4 +33,9 @@ passport.deserializeUser(function(id, done) {
   done(null, { id: 1, name: "Cody" });
 });
 
-
+exports.isAuthenticated = function(req, res, next) {
+  if(req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login"); 
+}

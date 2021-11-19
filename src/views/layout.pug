@@ -18,10 +18,12 @@ html(lang='en')
               a(href='/registrar-fechas') Registrar fechas
             li
               a(href='/registrar-alumno') Registrar alumno
+        button.logout-btn
+          a(href="/logout") logout
         img.logo(src="/images/prepanet-logo.png" alt="prepanet-logo")
     main 
       block content
     footer
       block footer
         p PrepanetMinful 2021  
-
+    script(type="text/javascript" src="/javascripts/index.js")
