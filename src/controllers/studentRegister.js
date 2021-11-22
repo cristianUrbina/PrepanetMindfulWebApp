@@ -1,19 +1,30 @@
-const db = require("../database");
+const db = require("../database/database");
+
+const populateDB = require("../database/populateDB/populateDB")
 
 exports.show_student_regiter = function (req, res) {
   db.ref("students").once("value", (snapshot) => {
     const data = snapshot.val();
-    console.log(data);
     res.render("studentRegister", { students: data });
   });
 };
 
 exports.register_student = function (req, res) {
-  console.log(req.body);
-  const newStudent = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-  };
-  db.ref("students").push(newStudent);
-  res.redirect("/");
+  if (req.files) {
+    console.log(req.files)
+    var file = req.files.csv;
+    var filename = file.name;
+    console.log(filename);
+    file.mv("./src/populateDB/csv-files/" + filename, function (err) {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        console.log("Lets populate the database!!!");
+        populateDB.populate(filename);
+        res.redirect("/");
+      }
+    });
+  }
+    //db.ref("students").push(newStudent);
 };

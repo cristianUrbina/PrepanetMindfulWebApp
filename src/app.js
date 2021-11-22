@@ -7,6 +7,7 @@ var passport = require("passport");
 var session = require("express-session");
 var PassportLocal = require("passport-local").Strategy;
 var router = express.Router();
+const upload = require("express-fileupload");
 
 require("./passport/local-auth");
 
@@ -34,6 +35,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(upload());
 
 
 app.use("/", indexRouter);
