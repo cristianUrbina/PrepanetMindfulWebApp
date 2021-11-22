@@ -36,16 +36,16 @@ function extractAsCSV(users) {
 }
 
 exports.populate = function(filename) {
-  fs.createReadStream("./src/populateDB/csv-files/" + filename)
+  fs.createReadStream("./src/database/populateDB/csv-files/" + filename)
     .pipe(csv())
     .on("data", function(row) {
       const user = {
-        name: row.NOMBRECOMPLETO,
-        campus: row.CAMPUS,
-        campus_acronym: row.CLAVECAMPUS,
-        coordinator: row.NOMBRECOORDINADORPREPANET,
-        coordinator_email: row.CORREOCOORDINADORPREPANET,
-        coordinator_id: row.NOMINACOORDINADORPREPANET
+        name: row["NOMBRE COMPLETO"],
+        campus: row["CAMPUS"],
+        campus_acronym: row[ "CLAVE CAMPUS" ],
+        coordinator: row[ "NOMBRE COORDINADOR PREPANET" ],
+        coordinator_email: row[ "CORREO COORDINADOR PREPANET" ],
+        coordinator_id: row[ "NOMINA COORDINADOR PREPANET" ]
       }
       console.log(user);
       users[row.MATRICULA] = user;

@@ -15,7 +15,7 @@ exports.register_student = function (req, res) {
     var file = req.files.csv;
     var filename = file.name;
     console.log(filename);
-    file.mv("./src/populateDB/csv-files/" + filename, function (err) {
+    file.mv("./src/database/populateDB/csv-files/" + filename, function (err) {
       if (err) {
         res.send(err);
       }
