@@ -48,12 +48,14 @@ exports.populate = function(filename) {
         coordinator_id: row[ "NOMINA COORDINADOR PREPANET" ]
       }
       console.log(user);
-      users[row.MATRICULA] = user;
+      //users[row.MATRICULA] = user;
+      db.ref("students").child(row.MATRICULA).set(user);
     })
     .on("end", function() {
       //console.table(users);
       //console.log(users);
-      db.ref("students").set(users);
+      //db.ref("students").set(users);
+      users = []
       // TODO: SAVE users data to another file
       writeToCSVFile(users);
       db.ref("super_users").set({

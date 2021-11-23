@@ -7,10 +7,10 @@ block content
     input(type="file" name="csv")
     input(type="submit" value="Upload")
   ul
-    //-each student, id in students
-      li
-        a(href=`alumno/${id}`) #{student.name}
-        |  (#{id}) 
-
-    //-else
+    if students !== null 
+      each student, id in students
+        li
+          a(href=`alumno/${id}`) #{student.name}
+          |  (#{id}) 
+    else
       li Sin estudiantes registrados.

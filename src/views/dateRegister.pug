@@ -1,4 +1,9 @@
 extends layout
 
 block content
-  p NOT IMPLEMENTED YET: dateRegister
+  form(action="/registrar-fechas" method="POST" enctype="multipart/form-data")
+    label(for="date-begin") Fecha de inicio
+    input(type="date" name="begin" id="date-begin")
+    label(for="date-end") Fecha de fin
+    input(type="date" name="end" id="date-end")
+    input(type="submit" value="Enviar")
