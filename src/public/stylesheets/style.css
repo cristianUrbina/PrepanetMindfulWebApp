@@ -65,3 +65,15 @@ footer{
   font-style: italic;
   text-align: center;
 }
+
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+input{
+  display: block;
+}

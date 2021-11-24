@@ -5,8 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var passport = require("passport");
 var session = require("express-session");
-var PassportLocal = require("passport-local").Strategy;
-var router = express.Router();
 const upload = require("express-fileupload");
 
 require("./passport/local-auth");

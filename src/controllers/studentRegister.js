@@ -1,6 +1,8 @@
 const db = require("../database/database");
 
-const populateDB = require("../database/populateDB/populateDB")
+const populateDB = require("../database/populateDB/populateDB");
+
+populateDB.addCoordinators();
 
 exports.show_student_regiter = function (req, res) {
   db.ref("students").once("value", (snapshot) => {
@@ -21,7 +23,7 @@ exports.register_student = function (req, res) {
       }
       else {
         console.log("Lets populate the database!!!");
-        populateDB.populate(filename);
+        populateDB.addStudents(filename);
         res.redirect("/");
       }
     });
