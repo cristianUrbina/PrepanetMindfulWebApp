@@ -17,7 +17,8 @@ function authorize(roles = []) {
         // user's role is not authorized
         console.log(roles);
         console.log(req.session.role);
-        return res.status(401).json({ message: "Unauthorized" });
+        res.status(401);
+        return res.render("unauthorized", {role: req.session.role});
       }
 
       // authentication and authorization successful

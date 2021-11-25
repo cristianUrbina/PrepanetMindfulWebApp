@@ -1,9 +1,7 @@
 extends layout
 
 block content
-  form(action="/registrar-alumno" method="POST" enctype="multipart/form-data")
-    //-input(type="text" name="firstname" placeholder="firstname")
-    //-input(type="text" name="lastname" placeholder="lastname")
+  form(action="/registrar-alumnos" method="POST" enctype="multipart/form-data")
     input(type="file" name="csv")
     input(type="submit" value="Subir archivo")
   ul
