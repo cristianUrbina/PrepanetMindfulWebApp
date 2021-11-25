@@ -61,8 +61,8 @@ exports.addStudents = function (filename) {
     });
 };
 
-exports.addSuperUsers = function () {
-  db.ref("super_users").set({
+exports.addSuperusers = function () {
+  db.ref("superusers").set({
     L00836882: {
       name: "Ana María Loreto Zuñiga",
       email: "ana.zuniga@tec.mx",
@@ -85,4 +85,4 @@ exports.addCoordinators = function () {
       campus: "Monterrey",
     }
   });
-}
+};

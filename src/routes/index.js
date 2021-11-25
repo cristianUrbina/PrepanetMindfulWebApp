@@ -23,7 +23,7 @@ router.use("/login", loginRouter);
 
 router.use((req, res, next) => {
   local_auth.isAuthenticated(req, res, next);
-  //next();
+  next();
 });
 
 router.use("/", homeRouter);

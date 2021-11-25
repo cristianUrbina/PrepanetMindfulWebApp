@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const db = require("../database/database");
-const async = require("async");
+const Role = require("../passport/_helpers/role");
 
 function checkUser(username, password, userType) {
   return new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ function checkUser(username, password, userType) {
         }
         snapshot.forEach((user) => {
           if (password === user.val().password) {
-            resolve(true);
+            resolve(user.val());
           }
           reject();
         });
@@ -23,13 +23,16 @@ function checkUser(username, password, userType) {
 }
 
 async function validate(username, password, done) {
-  var isSuperuser = await checkUser(username, password, "super_users").catch(() => false);
-  var isCoordinator = false;
-  if (!isSuperuser) {
-    isCoordinator = await checkUser(username, password, "coordinators").catch(() => false);;
+  var user = await checkUser(username, password, "superusers").catch(() => null);
+  exports.role = Role.Superuser;
+
+  if (!user) {
+    user = await checkUser(username, password, "coordinators").catch(() => null);;
+    exports.role = Role.Coordinator;
   }
-  if (isSuperuser || isCoordinator) {
-    done(null, { id: 1, name: username });
+
+  if (user) {
+    done(null, { id: username, name: user.name });
   } else {
     done(null, false);
   }

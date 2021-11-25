@@ -2,7 +2,9 @@ const db = require("../database/database");
 
 const populateDB = require("../database/populateDB/populateDB");
 
-populateDB.addCoordinators();
+// Uncomment this line to add superusers and coordinators after writing in populateDB
+//populateDB.addCoordinators();
+//populateDB.addSuperusers();
 
 exports.show_student_regiter = function (req, res) {
   db.ref("students").once("value", (snapshot) => {

@@ -5,11 +5,6 @@ var router = express.Router();
 var login_controller = require("../controllers/loginController");
 
 router.get("/", (req, res, next) => {
-  if(req.isAuthenticated()) {
-    res.redirect("/");
-  }
-  next();
-},(req, res, next) => {
   if (req.isAuthenticated()) {
     res.redirect("/");
   }
