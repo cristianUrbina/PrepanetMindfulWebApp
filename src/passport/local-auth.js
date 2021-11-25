@@ -9,11 +9,14 @@ function checkUser(username, password, userType) {
       .orderByKey()
       .equalTo(username)
       .once("value", (snapshot) => {
+        console.log("user " + username + " in " + userType);
+        console.log(snapshot.exists());
         if (!snapshot.exists()) {
           reject();
         }
         snapshot.forEach((user) => {
           if (password === user.val().password) {
+            console.log("resolve");
             resolve(user.val());
           }
           reject();

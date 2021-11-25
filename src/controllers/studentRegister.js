@@ -9,7 +9,7 @@ const populateDB = require("../database/populateDB/populateDB");
 exports.show_student_regiter = function (req, res) {
   db.ref("students").once("value", (snapshot) => {
     const data = snapshot.val();
-    res.render("studentRegister", { students: data });
+    res.render("studentRegister", {role: req.session.role,  students: data });
   });
 };
 
@@ -30,5 +30,4 @@ exports.register_student = function (req, res) {
       }
     });
   }
-    //db.ref("students").push(newStudent);
 };

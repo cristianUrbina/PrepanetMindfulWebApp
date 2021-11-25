@@ -12,7 +12,7 @@ router.get("/:studentId", function(req, res, next) {
       snapshot.forEach((user) => {
         console.log("user:");
         console.log(user.val());
-        res.render("profile", {id: user.key, student: user.val()});
+        res.render("profile", {role: req.session.role, id: user.key, student: user.val()});
       })
     }
   });

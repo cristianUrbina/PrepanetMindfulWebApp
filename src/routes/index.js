@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var local_auth = require("../passport/local-auth"); 
+const authorize = require("../passport/_helpers/authorize");
+const Role = require("../passport/_helpers/role");
  
 // Import routers
 var homeRouter = require("./home");
@@ -13,24 +14,13 @@ var profileRouter = require("./profile");
 
 
 
-/* GET home page. */
-//router.get('/', (req, res, next) => {
-  //if (req.isAuthenticated()) return next();
-  //res.redirect("/login");
-//}, index_controller.show_home_page);
-
 router.use("/login", loginRouter);
 
-router.use((req, res, next) => {
-  local_auth.isAuthenticated(req, res, next);
-  next();
-});
-
-router.use("/", homeRouter);
-router.use("/cursos", coursesRouter);
-router.use("/registrar-fechas", dateRegisterRouter);
-router.use("/registrar-alumno", studentRegisterRouter);
-router.use("/alumno", profileRouter);
-router.use("/logout", logoutRouter);
+router.use("/", authorize([ Role.Superuser, Role.Coordinator ]), homeRouter);
+router.use("/cursos", authorize([ Role.Superuser, Role.Coordinator ]), coursesRouter);
+router.use("/registrar-fechas", authorize(Role.Superuser), dateRegisterRouter);
+router.use("/registrar-alumno", authorize(Role.Superuser), studentRegisterRouter);
+router.use("/alumno", authorize([ Role.Superuser, Role.Coordinator ]), profileRouter);
+router.use("/logout", authorize([ Role.Superuser, Role.Coordinator ]), logoutRouter);
 
 module.exports = router;
