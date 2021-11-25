@@ -5,6 +5,7 @@ var router = express.Router();
 var login_controller = require("../controllers/loginController");
 
 router.get("/", (req, res, next) => {
+  // If authenticated then can't access /login route
   if (req.isAuthenticated()) {
     res.redirect("/");
   }

@@ -37,7 +37,7 @@ async function validate(username, password, done) {
   if (user) {
     done(null, { id: username, name: user.name });
   } else {
-    done(null, false);
+    done(null, false, { message: "El usuario y/o contraseña son incorrectos" });
   }
 }
 

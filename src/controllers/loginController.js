@@ -1,8 +1,7 @@
 var passport = require("passport");
 
-exports.check_login = function (req, res) {
-    //res.send('NOT IMPLEMENTED: login');
-    res.render("login");
+exports.check_login = function (req, res, next) {
+    res.render("login", { error: req.flash("error")});
 }
 
 exports.login = passport.authenticate("local", {
