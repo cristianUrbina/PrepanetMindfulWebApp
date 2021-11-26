@@ -8,7 +8,7 @@ block content
     if students 
       each student, id in students
         li
-          a(href=`alumno/${id}`) #{student.name}
+          a(href=`alumno/${id}`) #{student.nombre_completo}
           |  (#{id}) 
     else
       li Sin estudiantes registrados.

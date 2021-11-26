@@ -44,8 +44,7 @@ exports.addStudents = async function (filename) {
       addStudentUser(coordinator, "coordinadores", coordinator.nomina);
     })
     .on("end", function () {
-      //console.table(users);
-      console.log("Students writen in database");
+      console.log("Users writen in database");
       //db.ref("students").set(users);
       //users = []
       // TODO: SAVE users data to another file
@@ -54,18 +53,21 @@ exports.addStudents = async function (filename) {
 };
 
 exports.addSuperusers = async function () {
-  await db.collection("superusuarios").doc("L00836882").set({
+  var superuser = {
     name: "Ana María Loreto Zuñiga",
     email: "ana.zuniga@tec.mx",
     password: "anita",
     nomina: "L00836882"
-  });
-  await db.collection("superusuarios").doc("L00192153").set({
+  };
+  addStudentUser(superuser, "superusuarios", superuser.nomina);
+
+  superuser = {
     name: "María del Carmen Pámanes Fernández",
     email: "mpamanes@tec.mx",
     password: "mary",
     nomina: "L00192153", 
-  });
+  };
+  addStudentUser(superuser, "superusuarios", superuser.nomina);
 };
 
 //exports.addCoordinators = async function () {
@@ -114,12 +116,12 @@ async function addStudentUser (user, role, id) {
         // See the UserRecord reference doc for the contents of userRecord.
         console.log("Successfully created new user:", userRecord.uid);
         //resolve(userRecord.uid);
-        //const uid = await addFirebaseUser(user).catch(() => "11111");
         user["uid"] = userRecord.uid;
         db.collection(role).doc(id).set(user);
       })
       .catch((error) => {
-        console.log("Error creating new user:", error);
+        //console.log("Error creating new user:", error);
+        console.log("usuario creado previamante");
         //reject();
       });
   //});
@@ -131,7 +133,6 @@ async function getCampusId(acronym) {
       .doc(acronym)
       .get()
       .then((doc) => {
-        console.log(doc.data());
         resolve(doc.data().id);
       });
   });
@@ -148,9 +149,7 @@ function deleteFromSnapshot (snapshot) {
   if (snapshot.empty) {
     return;
   }
-  console.log("Deleting");
   snapshot.forEach((user) => {
-    console.log(user.data());
     getAuth()
       .deleteUser(user.data().uid)
       .then(() => {
@@ -165,4 +164,4 @@ function deleteFromSnapshot (snapshot) {
 //exports.addSuperusers();
 //exports.addCoordinators();
 //exports.addCampus();
-//deleteUsers();
+deleteUsers();
