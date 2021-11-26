@@ -8,6 +8,6 @@ block content
     label(for="date-end") Fecha de fin
     input(type="date" name="end" id="date-end" required)
     input(type="submit" value="Registrar")
-  if (dates !== null && dates !== undefined) 
-    p Fecha de inicio #{dates.begin}
-    p Fecha de fin #{dates.end}
+  if (dates) 
+    p Fecha de inicio #{dates.begin.date}
+    p Fecha de fin #{dates.end.date}

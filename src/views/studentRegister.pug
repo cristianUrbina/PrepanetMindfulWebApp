@@ -5,7 +5,7 @@ block content
     input(type="file" name="csv")
     input(type="submit" value="Subir archivo")
   ul
-    if students !== null 
+    if students 
       each student, id in students
         li
           a(href=`alumno/${id}`) #{student.name}

@@ -12,11 +12,8 @@ function authorize(roles = []) {
       local_auth.isAuthenticated(req, res, next);
     },
     function (req, res, next) {
-      console.log("inisde array");
       if (roles.length && !roles.includes(req.session.role)) {
         // user's role is not authorized
-        console.log(roles);
-        console.log(req.session.role);
         res.status(401);
         return res.render("unauthorized", {role: req.session.role});
       }

@@ -2,14 +2,16 @@ const db = require("../database/database");
 
 const populateDB = require("../database/populateDB/populateDB");
 
-// Uncomment this line to add superusers and coordinators after writing in populateDB
-//populateDB.addCoordinators();
-//populateDB.addSuperusers();
-
 exports.show_student_regiter = function (req, res) {
-  db.ref("students").once("value", (snapshot) => {
-    const data = snapshot.val();
-    res.render("studentRegister", {role: req.session.role,  students: data });
+  db.collection("estudiantes").get().then((snapshot) => {
+    var data = null;
+    if (!snapshot.empty) {
+      data = {};
+      snapshot.forEach(doc => {
+        data[doc.id] = doc.data();
+      });
+    }
+    res.render("studentRegister", { role: req.session.role,  students: data });
   });
 };
 

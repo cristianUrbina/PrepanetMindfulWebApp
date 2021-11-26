@@ -3,17 +3,6 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const db = require("../database");
 
-/*// Database*/
-/*var admin = require("firebase-admin");*/
-/*var serviceAccount = require("../prepanetmindfuldb-firebase-adminsdk-7iiyh-fb8ac1e56f.json");*/
-
-/*admin.initializeApp({*/
-/*credential: admin.credential.cert(serviceAccount),*/
-/*databaseURL: "https://prepanetmindfuldb-default-rtdb.firebaseio.com/"*/
-/*});*/
-
-/*const db = admin.database();*/
-
 let users = [];
 
 function writeToCSVFile(users) {
@@ -30,7 +19,7 @@ function writeToCSVFile(users) {
 function extractAsCSV(users) {
   const header = ["Id, name, campus, coordinator_id"];
   const rows = users.map(
-    (user) => `${user.id}, ${user.name}, ${user.campus}, ${user.coordinator_id}`
+    (user) => `${user.name}, ${user.campus}, ${user.coordinator_id}`
   );
   return header.concat(rows).join("\n");
 }
@@ -47,42 +36,44 @@ exports.addStudents = function (filename) {
         coordinator_email: row["CORREO COORDINADOR PREPANET"],
         coordinator_id: row["NOMINA COORDINADOR PREPANET"],
       };
-      console.log(user);
+      //console.log(user);
       //users[row.MATRICULA] = user;
-      db.ref("students").child(row.MATRICULA).set(user);
+      users.push(user);
+      db.collection("estudiantes").doc(row.MATRICULA).set(user);
     })
     .on("end", function () {
       //console.table(users);
-      //console.log(users);
+      console.log("Students writen in database");
       //db.ref("students").set(users);
       //users = []
       // TODO: SAVE users data to another file
-      //writeToCSVFile(users);
+      writeToCSVFile(users);
     });
 };
 
-exports.addSuperusers = function () {
-  db.ref("superusers").set({
-    L00836882: {
+exports.addSuperusers = async function () {
+ await db.collection("superusuarios").doc("L00836882").set({
       name: "Ana María Loreto Zuñiga",
       email: "ana.zuniga@tec.mx",
       password: "anita",
-    },
-    L00192153: {
+    
+  });
+ await db.collection("superusuarios").doc("L00192153").set({
       name: "María del Carmen Pámanes Fernández",
       email: "mpamanes@tec.mx",
       password: "mary",
-    },
   });
 };
 
-exports.addCoordinators = function () {
-  db.ref("coordinators").set({
-    L00834883: {
+exports.addCoordinators = async function () {
+  db.collection("coordinadores").doc("L00834883").set({
       name: "Cristian Omar Urbina Herrera",
       email: "urbina@tec.mx",
       password: "Cristony123",
       campus: "Monterrey",
-    }
   });
 };
+
+// Uncomment this line to add superusers and coordinators
+//exports.addSuperusers();
+//exports.addCoordinators();
