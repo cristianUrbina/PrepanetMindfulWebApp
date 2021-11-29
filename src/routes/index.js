@@ -16,7 +16,7 @@ var profileRouter = require("./profile");
 router.use("/login", loginRouter);
 
 router.use("/", authorize([ Role.Superuser, Role.Coordinator ]), homeRouter);
-router.use("/cursos", authorize([ Role.Superuser, Role.Coordinator ]), coursesRouter);
+router.use("/talleres", authorize([ Role.Superuser, Role.Coordinator ]), coursesRouter);
 router.use("/registrar-fechas", authorize(Role.Superuser), dateRegisterRouter);
 router.use("/registrar-alumnos", authorize(Role.Superuser), studentRegisterRouter);
 router.use("/alumno", authorize([ Role.Superuser, Role.Coordinator ]), profileRouter);

@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  ul
+    if students 
+      each student, id in students
+        li
+          a(href=`../../alumno/${id}`) #{student.nombre_completo}
+          |  (#{id}) 
+    else
+      li Sin estudiantes registrados.

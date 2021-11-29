@@ -164,4 +164,4 @@ function deleteFromSnapshot (snapshot) {
 //exports.addSuperusers();
 //exports.addCoordinators();
 //exports.addCampus();
-deleteUsers();
+//deleteUsers();
