@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  form(action="/talleres/ofertar" method="POST")
+    label(for="begin") Fecha de inicio
+    input(type="date" name="begin" id="begin")
+    label(for="end") Fecha de fin
+    input(type="date" name="end" id="end")
+    label(for="drop-down") Taller 
+    select(name="course" id="drop-down") 
+      each course in courses
+        option(value=course.id) #{course.name}
+    label(for="period") Periodo
+    input(type="text" name="period" id="period" placeholder="Ago-Dic 2021")
+    input(type="submit" value="Ofertar")

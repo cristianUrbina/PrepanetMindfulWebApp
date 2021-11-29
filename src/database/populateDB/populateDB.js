@@ -48,7 +48,7 @@ exports.addStudents = async function (filename) {
       //db.ref("students").set(users);
       //users = []
       // TODO: SAVE users data to another file
-      writeToCSVFile(users);
+      //writeToCSVFile(users);
     });
 };
 

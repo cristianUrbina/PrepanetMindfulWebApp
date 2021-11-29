@@ -1,12 +1,14 @@
 extends layout
 
 block content
-  p
-    a(href="/ofertar-taller") Abrir oferta de taller
-  p
-    a(href="/ofertas") Ofertas 
 
   if courses
-    each course in courses
-      li 
-        a(href=`/talleres/taller/${course.id}`) #{course.name}
+    table 
+      tr
+        th Taller 
+      each course in courses
+        tr 
+          td 
+            a(href=`/talleres/taller/${course.id}`) #{course.name}
+
+
