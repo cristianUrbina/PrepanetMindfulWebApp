@@ -2,13 +2,16 @@ extends layout
 block content
   if requests.length >= 1
     h1 Inscripciones pendientes
+    a(href="solicitudes/descargar")
+     button Descargar inscripciones pendientes como archivo
     table 
       tr
         th(rowspan="2") Matrícula
-        th(colspan="4") Oferta 
+        th(colspan="5") Oferta 
       tr
         th Id
         th Taller
+        th Periodo
         th Inicio
         th Fin
       each request in requests
@@ -20,12 +23,11 @@ block content
           td 
             p #{request.taller}
           td 
+            p #{request.oferta.periodo}
+          td 
             p #{request.oferta.fecha_inicio}
           td 
             p #{request.oferta.fecha_fin}
-    a(href="solicitudes/descargar")
-     button Descargar inscripciones pendientes como archivo
-
   else
     h1 No hay inscripciones pendientes 
 

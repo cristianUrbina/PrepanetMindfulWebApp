@@ -2,7 +2,18 @@ extends layout
 
 block content
   if offers 
-    each offer, id in offers
-      p #{offer.nombre_taller} (#{offer.periodo})
+    h1 Ofertas
+    table
+      tr
+        th Taller
+        th Inicio
+        th Fin
+        th Periodo
+      each offer, id in offers
+        tr
+          td #{offer.nombre_taller} 
+          td #{offer.fecha_inicio}
+          td #{offer.fecha_fin}
+          td #{offer.periodo}
   else
-    p no hay ofertas.
+    h1 No hay ofertas

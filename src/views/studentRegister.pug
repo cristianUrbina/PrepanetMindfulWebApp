@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  h1 Registrar alumnos a oferta
+  p En el siguiente formulario ingrese el archivo que pude descargar de la ruta "/solicitudes"
   form(action="/registrar-alumnos" method="POST" enctype="multipart/form-data")
     input(type="file" name="csv")
     input(type="submit" value="Subir archivo")

@@ -1,7 +1,6 @@
 const db = require("../database/database");
 const fs = require("fs");
 const csv = require("csv-parser");
-const async = require("async");
 
 const populateDB = require("../database/populateDB/populateDB");
 
@@ -19,7 +18,7 @@ exports.register_student = function (req, res) {
       } else {
         //populateDB.addStudents(filename);
         registerStudentsToGroup(filename, req.body.offer);
-        res.redirect("/");
+        res.redirect("/registrar-alumnos");
       }
     });
   }

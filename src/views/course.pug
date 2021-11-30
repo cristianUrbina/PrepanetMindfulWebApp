@@ -1,6 +1,17 @@
 extends layout
 
 block content
+  if role == "Superuser"
+    form(action="/talleres/taller/campus" method="POST")
+      select(name="campus")
+        option Nacional
+        each c, id in campus
+          if campusId == id
+            option(selected) #{id}
+          else
+            option #{id}
+      input(type="hidden" name="courseId" value=courseId)
+      input(type="submit" value="Filtrar")
   if inscriptions 
     table 
       tr
@@ -10,7 +21,7 @@ block content
       each inscription, id in inscriptions
         tr 
           td 
-            a(href=`../../alumno/${id}`) #{inscription.id_estudiante} 
+            a(href=`/alumno/${id}`) #{inscription.id_estudiante} 
           td 
             p #{inscription.estudiante}
           td 

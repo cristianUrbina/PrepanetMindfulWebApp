@@ -1,5 +1,7 @@
 extends layout
 block content
+  h1 Registrar alumnos a la aplicación
+  p Se generan cuentas y registros de los alumnos y sus respectivos coordinadores
   form(action="/registrar-cuentas" method="POST" enctype="multipart/form-data")
     input(type="file" name="csv")
     input(type="submit" value="Subir archivo")

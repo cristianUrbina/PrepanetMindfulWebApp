@@ -27,6 +27,7 @@ exports.show = async function (req, res, next) {
         requests[Math.floor(cntr / 2)]["oferta"] = {
           fecha_inicio: doc.data().fecha_inicio,
           fecha_fin: doc.data().fecha_fin,
+          periodo: doc.data().periodo,
         };
       }
       cntr++;

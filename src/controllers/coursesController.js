@@ -1,32 +1,39 @@
 const db = require("../database/database");
 
-exports.show = async function(req, res, next) {
+exports.show = async function (req, res, next) {
   const snapshot = await db.collection("talleres").get();
   var courses = [];
-  snapshot.forEach((doc) =>{
-    var course = doc.data() 
+  snapshot.forEach((doc) => {
+    var course = doc.data();
     course.id = doc.id;
     courses.push(course);
   });
   //console.log(courses);
-  res.render("courses", {role: req.session.role, courses: courses});
+  res.render("courses", { role: req.session.role, courses: courses });
 };
 
 exports.show_to_offer = async function (req, res, next) {
   const snapshot = await db.collection("talleres").get();
   var courses = [];
-  snapshot.forEach((doc) =>{
-    var course = doc.data() 
+  snapshot.forEach((doc) => {
+    var course = doc.data();
     course.id = doc.id;
     courses.push(course);
   });
-  res.render("offer", { role: req.session.role, courses: courses } );
+  res.render("offer", { role: req.session.role, courses: courses, message: req.flash("myError") });
 };
 
 exports.post_to_offer = async function (req, res, next) {
+  var beginArray = req.body.begin.split("-").map((line) => parseInt(line, 10));
+  var endArray = req.body.end.split("-").map((line) => parseInt(line, 10));
+  if (req.body.begin > req.body.end) {
+    req.flash("myError", "La fecha de inicio no puede ser después de la fecha de fin");
+    res.redirect("/talleres/ofertar");
+    return;
+  }
   db.collection("ofertas").add({
-    taller_id: req.body.course,
-    periodo: req.body.period,
+    id_taller: req.body.course,
+    periodo: (beginArray[1] <= 6 ? "Feb-Jun" : "Ago-Dic") + " " + beginArray[0].toString(),
     fecha_inicio: req.body.begin,
     fecha_fin: req.body.end,
   });
@@ -40,7 +47,7 @@ exports.show_offers = async function (req, res, next) {
   var finalOffers = {};
   var promises = [];
   offersSnapshot.forEach((doc) => {
-    promises.push(db.collection("talleres").doc(doc.data().taller_id).get());
+    promises.push(db.collection("talleres").doc(doc.data().id_taller).get());
     offers.push(doc.data());
     ids.push(doc.id);
   });
@@ -55,25 +62,80 @@ exports.show_offers = async function (req, res, next) {
   });
 };
 
-exports.course = async function(req, res, next) {
-  const snapshot = await db.collection("inscripciones").where("id_taller","==", req.params.courseId).get();
+exports.course = async function (req, res, next) {
+  const snapshot = await db
+    .collection("inscripciones")
+    .where("id_taller", "==", req.params.courseId)
+    .get();
   var promises = [];
   var inscriptions = {};
   snapshot.forEach((doc) => {
     promises.push(db.collection("estudiantes").doc(doc.data().id_estudiante).get());
     inscriptions[doc.data().id_estudiante] = doc.data();
   });
-  //console.log("first inscriptions");
-  //console.log(inscriptions);
-  Promise.all(promises).then((snapshots) => {
+  Promise.all(promises).then(async (snapshots) => {
     snapshots.forEach((student) => {
-      console.log(student.data());
       var tmp = inscriptions[student.data().matricula];
-      tmp["estudiante"] =  student.data().nombre_completo;
-      inscriptions[student.matricula] = tmp;
+      tmp["estudiante"] = student.data().nombre_completo;
+      inscriptions[student.data().matricula] = tmp;
     });
-    console.log("inscriptions");
-    console.log(inscriptions);
-    res.render("course", { role: req.session.role, inscriptions: inscriptions });
+    var campus = {};
+    const campusSnapshot = await db.collection("Campus").get();
+    campusSnapshot.forEach((doc) => {
+      campus[doc.id] = doc.data();
+    });
+    res.render("course", {
+      role: req.session.role,
+      inscriptions: inscriptions,
+      campus: campus,
+      courseId: req.params.courseId,
+    });
   });
+};
+
+exports.course_campus = async function (req, res, next) {
+  const campusId = req.params.campusId;
+  if (campusId == "Nacional") {
+    res.redirect("/talleres/taller/" + req.params.courseId);
+    return;
+  }
+  const snapshot = await db
+    .collection("inscripciones")
+    .where("id_taller", "==", req.params.courseId)
+    .get();
+  var promises = [];
+  var inscriptions = {};
+  var finalInscriptions = {};
+  snapshot.forEach((doc) => {
+    promises.push(db.collection("estudiantes").doc(doc.data().id_estudiante).get());
+    inscriptions[doc.data().id_estudiante] = doc.data();
+  });
+  Promise.all(promises).then(async (snapshots) => {
+    snapshots.forEach((student) => {
+      var tmp = inscriptions[student.data().matricula];
+      tmp["estudiante"] = student.data().nombre_completo;
+      inscriptions[student.data().matricula] = tmp;
+      if (student.data().id_campus == campusId) {
+        finalInscriptions[student.data().matricula] = tmp;
+      }
+    });
+    var campus = {};
+    const campusSnapshot = await db.collection("Campus").get();
+    campusSnapshot.forEach((doc) => {
+      campus[doc.id] = doc.data();
+    });
+    res.render("course", {
+      role: req.session.role,
+      inscriptions: finalInscriptions,
+      campus: campus,
+      courseId: req.params.courseId,
+      campusId: req.params.campusId,
+    });
+  });
+};
+
+exports.redirect_course_campus = function (req, res, next) {
+  const campusId = req.body.campus;
+  const courseId = req.body.courseId;
+  res.redirect("/talleres/taller/" + courseId + "/" + campusId);
 };

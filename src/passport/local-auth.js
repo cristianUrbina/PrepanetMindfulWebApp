@@ -5,6 +5,7 @@ const Role = require("../passport/_helpers/role");
 
 function checkUser(username, password, userType) {
   return new Promise((resolve, reject) => {
+    console.log("looking for " + username + " in " + userType);
     db.collection(userType).doc(username).get().then((doc) => {
         if (!doc.exists) {
           reject();

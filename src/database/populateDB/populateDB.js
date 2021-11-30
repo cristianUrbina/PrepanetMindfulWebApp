@@ -21,9 +21,9 @@ exports.writeToCSVFile = function (filename, data) {
 };
 
 function extractAsCSV(requests) {
-  const header = ["id_estudiante,id_oferta,taller,fecha_inicio,fecha_fin"];
+  const header = ["id_estudiante,id_oferta,taller,periodo,fecha_inicio,fecha_fin"];
   const rows = requests.map(
-    (request) => `${request.id_estudiante},${request.id_oferta},${request.taller},${request.oferta.fecha_inicio},${request.oferta.fecha_fin}`
+    (request) => `${request.id_estudiante},${request.id_oferta},${request.taller},${request.oferta.periodo},${request.oferta.fecha_inicio},${request.oferta.fecha_fin}`
   );
   return header.concat(rows).join("\n");
 }
@@ -83,15 +83,13 @@ exports.addSuperusers = async function () {
 exports.addInscriptions = async function () {
   const offersSnapshot = await db.collection("ofertas").get();
   const studentsSnapshot = await db.collection("estudiantes").get();
-  console.log("offersSnapshot.empty");
-  console.log(offersSnapshot.empty);
   offersSnapshot.forEach((offer) => {
     studentsSnapshot.forEach((student) => {
       db.collection("inscripciones").add({
         estatus: "I",
         id_estudiante: student.id,
         id_oferta: offer.id,
-        id_taller: offer.data().taller_id,
+        id_taller: offer.data().id_taller,
         timestamp: Date.now(),
       });
     });
