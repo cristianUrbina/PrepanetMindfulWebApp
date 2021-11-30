@@ -9,6 +9,7 @@ var homeRouter = require("./home");
 var loginRouter = require("./login");
 var logoutRouter = require("./logout");
 var coursesRouter = require("./courses");
+var requestsRouter = require("./requests");
 var dateRegisterRouter = require("./dateRegister");
 var studentRegisterRouter = require("./studentRegister");
 var accountRegisterRouter = require("./accountRegister");
@@ -18,6 +19,7 @@ router.use("/login", loginRouter);
 
 router.use("/", authorize([ Role.Superuser, Role.Coordinator ]), homeRouter);
 router.use("/talleres", authorize([ Role.Superuser, Role.Coordinator ]), coursesRouter);
+router.use("/solicitudes", authorize(Role.Superuser), requestsRouter);
 router.use("/registrar-fechas", authorize(Role.Superuser), dateRegisterRouter);
 router.use("/registrar-alumnos", authorize(Role.Superuser), studentRegisterRouter);
 router.use("/registrar-cuentas", authorize(Role.Superuser), accountRegisterRouter);

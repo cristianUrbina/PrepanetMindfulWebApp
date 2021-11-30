@@ -7,8 +7,8 @@ const Role = require("../passport/_helpers/role");
 var date_register = require ("../controllers/dateRegister");
 
 // GET registro de fechas
-router.get('/', authorize(Role.Superuser), date_register.recordDate);
+router.get('/', date_register.recordDate);
 
-router.post("/", authorize(Role.Superuser), date_register.postDate);
+router.post("/", date_register.postDate);
 
 module.exports = router;

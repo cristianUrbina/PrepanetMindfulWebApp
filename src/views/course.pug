@@ -1,11 +1,25 @@
 extends layout
 
 block content
-  ul
-    if students 
-      each student, id in students
-        li
-          a(href=`../../alumno/${id}`) #{student.nombre_completo}
-          |  (#{id}) 
-    else
-      li Sin estudiantes registrados.
+  //-ul
+    //-if inscriptions 
+      //-each inscription, id in inscriptions
+        //-li
+          //-a(href=`../../alumno/${id}`) #{inscription.id_estudiante} #{inscription.estatus}
+    //-else
+      //-li Sin estudiantes registrados.
+  if inscriptions 
+    table 
+      tr
+        th Alumno 
+        th Matrícula
+        th Estatus
+      each inscription, id in inscriptions
+        tr 
+          td 
+            p #{inscription.estudiante}
+          td 
+            a(href=`../../alumno/${id}`) #{inscription.id_estudiante} 
+          td 
+            p #{inscription.estatus}
+

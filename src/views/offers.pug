@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  if offers 
+    each offer, id in offers
+      p #{offer.nombre_taller} (#{offer.periodo})
+  else
+    p no hay ofertas.

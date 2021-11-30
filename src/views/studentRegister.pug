@@ -4,11 +4,3 @@ block content
   form(action="/registrar-alumnos" method="POST" enctype="multipart/form-data")
     input(type="file" name="csv")
     input(type="submit" value="Subir archivo")
-    if offers 
-      select(name="offer") 
-        each offer, id in offers
-          option(value=id) #{offer.nombre_taller} (#{offer.periodo})
-        //-li
-        //-a(href=`/ofertas/${id}`) #{offer.nombre_taller} (#{offer.periodo})
-    else
-      p no hay ofertas.

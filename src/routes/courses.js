@@ -27,10 +27,8 @@ router.get("/ofertar", async function (req, res, next) {
 });
 
 router.post("/ofertar", async function (req, res, next) {
-  const course = await db.collection("talleres").doc(req.body.course).get();
-  console.log(course.id);
   db.collection("ofertas").add({
-    taller_id: course.id,
+    taller_id: req.body.course,
     periodo: req.body.period,
     fecha_inicio: req.body.begin,
     fecha_fin: req.body.end,
@@ -38,13 +36,51 @@ router.post("/ofertar", async function (req, res, next) {
   res.redirect("/talleres/ofertar");
 });
 
-router.get("/taller/:courseId", async function(req, res, next) {
-  const snapshot = await db.collection("estudiantes").get();
-  var students = {};
-  snapshot.forEach((doc) => {
-    students[doc.id] = doc.data();
+router.get("/ofertas", async function (req, res, next) {
+  const offersSnapshot = await db.collection("ofertas").get();
+  var offers = [];
+  var ids = [];
+  var finalOffers = {};
+  var promises = [];
+
+  offersSnapshot.forEach((doc) => {
+    promises.push(db.collection("talleres").doc(doc.data().taller_id).get());
+    offers.push(doc.data());
+    ids.push(doc.id);
   });
-  res.render("course", { role: req.session.role, students: students });
-  //res.send("Not implemented");
+
+  Promise.all(promises).then((snapshots) => {
+    var cntr = 0;
+    snapshots.forEach((doc) => {
+      offers[cntr].nombre_taller = doc.data().name;
+      finalOffers[ids[cntr]] = offers[cntr];
+      cntr++;
+    });
+    res.render("offers", { role: req.session.role, offers: finalOffers });
+  });
 });
+
+router.get("/taller/:courseId", async function(req, res, next) {
+  const snapshot = await db.collection("inscripciones").where("id_taller","==", req.params.courseId).get();
+  var promises = [];
+  var inscriptions = {};
+  snapshot.forEach((doc) => {
+    promises.push(db.collection("estudiantes").doc(doc.data().id_estudiante).get());
+    inscriptions[doc.data().id_estudiante] = doc.data();
+  });
+  //console.log("first inscriptions");
+  //console.log(inscriptions);
+  Promise.all(promises).then((snapshots) => {
+    snapshots.forEach((student) => {
+      console.log(student.data());
+      var tmp = inscriptions[student.data().matricula];
+      tmp["estudiante"] =  student.data().nombre_completo;
+      inscriptions[student.matricula] = tmp;
+    });
+    console.log("inscriptions");
+    console.log(inscriptions);
+    res.render("course", { role: req.session.role, inscriptions: inscriptions });
+  });
+});
+
 module.exports = router;

@@ -1,31 +1,12 @@
 const db = require("../database/database");
 const fs = require("fs");
 const csv = require("csv-parser");
+const async = require("async");
 
 const populateDB = require("../database/populateDB/populateDB");
 
 exports.show_student_regiter = async function (req, res) {
-  const offersSnapshot = await db.collection("ofertas").get();
-  var offers = [];
-  var ids = [];
-  var finalOffers = {};
-  var promises = [];
-
-  offersSnapshot.forEach((doc) => {
-    promises.push(db.collection("talleres").doc(doc.data().taller_id).get());
-    offers.push(doc.data());
-    ids.push(doc.id);
-  });
-
-  Promise.all(promises).then((snapshots) => {
-    var cntr = 0;
-    snapshots.forEach((doc) => {
-      offers[cntr].nombre_taller = doc.data().name;
-      finalOffers[ids[cntr]] = offers[cntr];
-      cntr++;
-    });
-    res.render("studentRegister", { role: req.session.role, offers: finalOffers });
-  });
+  res.render("studentRegister", { role: req.session.role });
 };
 
 exports.register_student = function (req, res) {
@@ -37,24 +18,59 @@ exports.register_student = function (req, res) {
         res.send(err);
       } else {
         //populateDB.addStudents(filename);
-        registerStudentsToOffer(filename, req.body.offer);
+        registerStudentsToGroup(filename, req.body.offer);
         res.redirect("/");
       }
     });
   }
 };
 
-function registerStudentsToOffer(filename, offerId) {
+var groups = [];
+
+async function tmp(row) {
+  const id_estudiante = row["id_estudiante"];
+  const id_oferta = row["id_oferta"];
+  //const student = await db.collection("estudiantes").doc(id_estudiante).get();
+  //const id_campus = student.data().id_campus;
+  db.collection("inscripciones")
+    .where("id_oferta", "==", id_oferta)
+    .where("id_estudiante", "==", id_estudiante)
+    .get()
+    .then((snapshot) => {
+      if (!snapshot.empty) {
+        snapshot.forEach((doc) => {
+          db.collection("inscripciones").doc(doc.id).update({
+            estatus: "C",
+          });
+        });
+      }
+    });
+  //console.log("id_oferta " + id_oferta);
+  //console.log("id_estudiante " + id_estudiante);
+  //console.log("id_campus " + id_campus);
+  //if (groups[id_oferta]) {
+    //console.log("groups[id_oferta]");
+    //if (groups[id_oferta][id_campus]) {
+      //console.log("groups[id_oferta][id_campus]");
+      //groups[id_oferta][id_campus].push(id_estudiante);
+    //} else {
+      //groups[id_oferta][id_campus] = [id_estudiante];
+    //}
+  //} else {
+    //groups[id_oferta] = {
+      //[id_campus]: [id_estudiante],
+    //};
+  //}
+}
+
+
+async function registerStudentsToGroup(filename) {
   fs.createReadStream("./src/database/populateDB/csv-files/" + filename)
     .pipe(csv())
-    .on("data", async function (row) {
-      db.collection("inscripciones").add({
-        estudiante_id: row["MATRICULA"],
-        oferta_id: offerId,
-        estatus: "Pendiente",
-      });
-    })
+    .on("data", tmp)
     .on("end", function () {
-      console.log("Students registered to offer" + offerId );
+      //console.log("Students registered to their respective groups");
+      console.log("groups");
+      console.log(groups);
     });
 }

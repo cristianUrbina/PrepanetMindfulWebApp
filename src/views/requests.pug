@@ -1,0 +1,9 @@
+extends layout
+block content
+  button 
+    a(href="solicitudes/descargar") Descargar archivo
+  //-if requests
+    //-each request in requests
+      //-p #{request.estudiante_id} | #{request.oferta_id}
+  //-else
+    //-p no requests
