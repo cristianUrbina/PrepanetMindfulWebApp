@@ -1,10 +1,10 @@
 var admin = require("firebase-admin");
 
-const serviceAccount = require("./prepanetmindful-firebase-adminsdk-7n6t5-466288466e.json");
+const serviceAccount = require("./prepanetmindfulbd-firebase-adminsdk-v8clo-75c91f67e7.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://prepanetmindfuldb-default-rtdb.firebaseio.com/"
+  databaseURL: "https://prepanetmindfulbd-default-rtdb.firebaseio.com/"
 });
 
 module.exports = admin;

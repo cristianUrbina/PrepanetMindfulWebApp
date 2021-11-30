@@ -44,6 +44,16 @@ async function tmp(row) {
         });
       }
     });
+  const student = await db.collection("estudiantes").doc(id_estudiante).get();
+  const offer = await db.collection("ofertas").doc(id_oferta).get();
+  var statusList = student.data().estatus_cursos;
+  console.log("oferta");
+  console.log(id_oferta);
+  console.log(offer.data());
+  statusList[offer.data().id_taller - 1] = "C";
+  db.collection("estudiantes").doc(id_estudiante).update({
+    estatus_cursos: statusList,
+  });
   //console.log("id_oferta " + id_oferta);
   //console.log("id_estudiante " + id_estudiante);
   //console.log("id_campus " + id_campus);

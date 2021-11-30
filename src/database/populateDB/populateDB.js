@@ -23,7 +23,33 @@ exports.writeToCSVFile = function (filename, data) {
 function extractAsCSV(requests) {
   const header = ["id_estudiante,id_oferta,taller,periodo,fecha_inicio,fecha_fin"];
   const rows = requests.map(
-    (request) => `${request.id_estudiante},${request.id_oferta},${request.taller},${request.oferta.periodo},${request.oferta.fecha_inicio},${request.oferta.fecha_fin}`
+    (request) =>
+      `${request.id_estudiante},${request.id_oferta},${request.taller},${request.oferta.periodo},${request.oferta.fecha_inicio},${request.oferta.fecha_fin}`
+  );
+  return header.concat(rows).join("\n");
+}
+
+exports.writeToReportCSVFile = function (filename, data) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filename, extractReportAsCSV(data), (err) => {
+      if (err) {
+        console.log("Error writing to csv file", err);
+        reject();
+      } else {
+        console.log(`saved as ${filename}`);
+        resolve();
+      }
+    });
+  });
+};
+
+function extractReportAsCSV(students) {
+  const header = ["id_estudiante,nombre,taller_1,taller_2,taller_3,taller_4,taller_5,taller_6"];
+  console.log("students");
+  console.log(students);
+  const rows = students.map(
+    (student) =>
+      `${student.matricula},${student.nombre_completo},${student.estatus_cursos[0]}, ${student.estatus_cursos[1]}, ${student.estatus_cursos[2]}, ${student.estatus_cursos[3]}, ${student.estatus_cursos[4]}, ${student.estatus_cursos[5]}`
   );
   return header.concat(rows).join("\n");
 }
@@ -37,6 +63,7 @@ exports.addStudents = async function (filename) {
         matricula: row["MATRICULA"],
         id_campus: row["CLAVE CAMPUS"],
         id_coordinador: row["NOMINA COORDINADOR PREPANET"],
+        estatus_cursos: ["P", "P", "P", "P", "P", "P"],
       };
       var coordinator = {
         nombre_completo: row["NOMBRE COORDINADOR PREPANET"],
@@ -55,7 +82,7 @@ exports.addStudents = async function (filename) {
 
 exports.addSuperusers = async function () {
   var superuser = {
-    name: "Ana María Loreto Zuñiga",
+    nombre_completo: "Ana María Loreto Zuñiga",
     email: "ana.zuniga@tec.mx",
     password: "anita",
     nomina: "L00836882",
@@ -63,7 +90,7 @@ exports.addSuperusers = async function () {
   addStudentUser(superuser, "superusuarios", superuser.nomina);
 
   superuser = {
-    name: "María del Carmen Pámanes Fernández",
+    nombre_completo: "María del Carmen Pámanes Fernández",
     email: "mpamanes@tec.mx",
     password: "mary",
     nomina: "L00192153",
@@ -121,6 +148,7 @@ exports.addCampus = async function () {
 
 async function addStudentUser(user, role, id) {
   //return new Promise((resolve, reject) => {
+  console.log(user.nombre_completo);
   getAuth()
     .createUser({
       email: id + "@tec.mx",
