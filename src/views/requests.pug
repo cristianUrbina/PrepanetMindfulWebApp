@@ -1,9 +1,31 @@
 extends layout
 block content
-  button 
-    a(href="solicitudes/descargar") Descargar archivo
-  //-if requests
-    //-each request in requests
-      //-p #{request.estudiante_id} | #{request.oferta_id}
-  //-else
-    //-p no requests
+  if requests.length >= 1
+    h1 Inscripciones pendientes
+    table 
+      tr
+        th(rowspan="2") Matrícula
+        th(colspan="4") Oferta 
+      tr
+        th Id
+        th Taller
+        th Inicio
+        th Fin
+      each request in requests
+        tr 
+          td 
+            p #{request.id_estudiante}
+          td 
+            p #{request.id_oferta}
+          td 
+            p #{request.taller}
+          td 
+            p #{request.oferta.fecha_inicio}
+          td 
+            p #{request.oferta.fecha_fin}
+    a(href="solicitudes/descargar")
+     button Descargar inscripciones pendientes como archivo
+
+  else
+    h1 No hay inscripciones pendientes 
+

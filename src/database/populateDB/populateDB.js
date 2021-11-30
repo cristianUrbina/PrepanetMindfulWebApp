@@ -21,9 +21,9 @@ exports.writeToCSVFile = function (filename, data) {
 };
 
 function extractAsCSV(requests) {
-  const header = ["id_estudiante,id_oferta,id_taller"];
+  const header = ["id_estudiante,id_oferta,taller,fecha_inicio,fecha_fin"];
   const rows = requests.map(
-    (request) => `${request.id_estudiante},${request.id_oferta},${request.id_taller}`
+    (request) => `${request.id_estudiante},${request.id_oferta},${request.taller},${request.oferta.fecha_inicio},${request.oferta.fecha_fin}`
   );
   return header.concat(rows).join("\n");
 }
