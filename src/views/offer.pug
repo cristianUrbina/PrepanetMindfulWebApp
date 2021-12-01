@@ -3,11 +3,11 @@ extends layout
 block content
   form(action="/talleres/ofertar" method="POST")
     label(for="begin") Fecha de inicio
-    input(type="date" name="begin" id="begin")
+    input(type="date" name="begin" id="begin" required)
     label(for="end") Fecha de fin
-    input(type="date" name="end" id="end")
+    input(type="date" name="end" id="end" required)
     label(for="drop-down") Taller 
-    select(name="course" id="drop-down") 
+    select(name="course" id="drop-down" required) 
       each course in courses
         option(value=course.id) #{course.name}
     input(type="submit" value="Ofertar")

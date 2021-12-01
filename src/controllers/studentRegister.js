@@ -1,17 +1,26 @@
 const db = require("../database/database");
 const fs = require("fs");
 const csv = require("csv-parser");
+const path = require("path");
 
 const populateDB = require("../database/populateDB/populateDB");
 
 exports.show_student_regiter = async function (req, res) {
-  res.render("studentRegister", { role: req.session.role });
+  const message = req.flash("file_error");
+  res.render("studentRegister", { role: req.session.role, message: message });
 };
 
 exports.register_student = function (req, res) {
   if (req.files) {
     var file = req.files.csv;
     var filename = file.name;
+    console.log("filename");
+    console.log(path.extname(filename));
+    if (path.extname(filename) != ".csv"){
+      req.flash("file_error", "El archivo debe tener extensión .csv");
+      res.redirect("/registrar-alumnos");
+      return;
+    };
     file.mv("./src/database/populateDB/csv-files/" + filename, function (err) {
       if (err) {
         res.send(err);

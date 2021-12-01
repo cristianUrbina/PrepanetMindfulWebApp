@@ -17,6 +17,8 @@ router.post("/taller/campus", courses_controller.redirect_course_campus);
 
 router.get("/taller/:courseId", courses_controller.course);
 
+//router.post("/taller/:courseId", courses_controller.change_inscription_status);
+
 router.get("/taller/:courseId/:campusId", courses_controller.course_campus);
 
 module.exports = router;

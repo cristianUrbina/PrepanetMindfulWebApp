@@ -97,6 +97,10 @@ tr:nth-child(odd) td {
 main{
   margin: 100px auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
 
 footer{
@@ -117,7 +121,24 @@ form{
   align-items: center;
 }
 
-
 input{
   display: block;
+}
+
+.error{
+  height: 50px;
+  margin: 20px;
+  color: white;
+  background-color: rgba(125,0,0,0.5);;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.error>p {
+  height: 50%;
+  font-size: 1.3em;
+  text-align: center;
 }
