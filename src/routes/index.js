@@ -13,6 +13,7 @@ var reportRouter = require("./report");
 var requestsRouter = require("./requests");
 var dateRegisterRouter = require("./dateRegister");
 var studentRegisterRouter = require("./studentRegister");
+var updateStatusRouter = require("./updateStatus");
 var accountRegisterRouter = require("./accountRegister");
 var profileRouter = require("./profile");
 
@@ -25,6 +26,7 @@ router.use("/registrar-fechas", authorize(Role.Superuser), dateRegisterRouter);
 router.use("/reporte", authorize([ Role.Superuser, Role.Coordinator ]), reportRouter);
 router.use("/registrar-alumnos", authorize(Role.Superuser), studentRegisterRouter);
 router.use("/registrar-cuentas", authorize(Role.Superuser), accountRegisterRouter);
+router.use("/actualizar-estatus", authorize(Role.Superuser), updateStatusRouter);
 router.use("/alumno", authorize([ Role.Superuser, Role.Coordinator ]), profileRouter);
 router.use("/logout", authorize([ Role.Superuser, Role.Coordinator ]), logoutRouter);
 
