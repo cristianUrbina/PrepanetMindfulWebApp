@@ -45,8 +45,6 @@ exports.writeToReportCSVFile = function (filename, data) {
 
 function extractReportAsCSV(students) {
   const header = ["id_estudiante,nombre,taller_1,taller_2,taller_3,taller_4,taller_5,taller_6"];
-  console.log("students");
-  console.log(students);
   const rows = students.map(
     (student) =>
       `${student.matricula},${student.nombre_completo},${student.estatus_cursos[0]}, ${student.estatus_cursos[1]}, ${student.estatus_cursos[2]}, ${student.estatus_cursos[3]}, ${student.estatus_cursos[4]}, ${student.estatus_cursos[5]}`

@@ -1,18 +1,18 @@
 extends layout
 
 block content
-  if role == "Superuser"
-    form(action="/talleres/taller/campus" method="POST")
-      select(name="campus")
-        option Nacional
-        each c, id in campus
-          if campusId == id
-            option(selected) #{id}
-          else
-            option #{id}
-      input(type="hidden" name="courseId" value=courseId)
-      input(type="submit" value="Filtrar")
-  if inscriptions 
+  if inscriptions && Object.keys(inscriptions).length
+    if role == "Superuser"
+      form(action="/talleres/taller/campus" method="POST")
+        select(name="campus")
+          option Nacional
+          each c, id in campus
+            if campusId == id
+              option(selected) #{id}
+            else
+              option #{id}
+        input(type="hidden" name="courseId" value=courseId)
+        input(type="submit" value="Filtrar")
     table 
       tr
         th Matrícula
@@ -27,3 +27,5 @@ block content
           td 
             p #{inscription.estatus}
 
+  else 
+    p No hay alumnos inscritos a ninguna oferta de este taller

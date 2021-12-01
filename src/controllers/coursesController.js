@@ -1,4 +1,5 @@
 const db = require("../database/database");
+const Role = require("../passport/_helpers/role");
 
 exports.show = async function (req, res, next) {
   const snapshot = await db.collection("talleres").get();
@@ -63,6 +64,11 @@ exports.show_offers = async function (req, res, next) {
 };
 
 exports.course = async function (req, res, next) {
+  // A coordinator only can see information about his or her campus
+  if (req.session.role == Role.Coordinator) {
+    res.redirect("/talleres/taller/" + req.params.courseId + "/" + req.session.user.id_campus);
+    return;
+  }
   const snapshot = await db
     .collection("inscripciones")
     .where("id_taller", "==", req.params.courseId)
@@ -94,6 +100,11 @@ exports.course = async function (req, res, next) {
 };
 
 exports.course_campus = async function (req, res, next) {
+  // A coordinator only can see information about his or her campus
+  if (req.session.role == Role.Coordinator && req.params.campusId != req.session.user.id_campus) {
+    res.redirect("/talleres/taller/" + req.params.courseId + "/" + req.session.user.id_campus);
+    return;
+  }
   const campusId = req.params.campusId;
   if (campusId == "Nacional") {
     res.redirect("/talleres/taller/" + req.params.courseId);

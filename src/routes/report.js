@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 const db = require("../database/database");
 const populateDB = require("../database/populateDB/populateDB");
+const Role = require("../passport/_helpers/role");
+
 //var account_register_controller = require("../controllers/accountRegister");
 
 router.get("/", function (req, res, next) {
@@ -10,12 +12,15 @@ router.get("/", function (req, res, next) {
 
 router.post("/", async function (req, res, next) {
   var data = [];
-  const studentsSnapshot = await db.collection("estudiantes").get();
+  var studentsSnapshot = null;
+  if (req.session.role == Role.Superuser) {
+    studentsSnapshot = await db.collection("estudiantes").get()
+  } else {
+    studentsSnapshot = await db.collection("estudiantes").where("id_campus", "==", req.session.user.id_campus).get();
+  }
   studentsSnapshot.forEach((doc) => {
     data.push(doc.data());
   });
-  console.log("data");
-  console.log(data);
   const filename = "src/database/populateDB/csv-files/reporte.csv";
   await populateDB.writeToReportCSVFile(filename, data);
   res.download(filename);

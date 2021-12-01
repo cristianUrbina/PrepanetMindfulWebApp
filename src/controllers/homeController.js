@@ -11,10 +11,11 @@ exports.show_home_page = function(req, res, next) {
       req.session.user.campus = campus.data().nombre;
     } else {
       req.session.user.campus = "Nacional";
+      req.session.user.id_campus = "NAC";
     }
     //console.log("req.session.user");
     //console.log(req.session.user)
     //console.log(req.session.user.campus)
-    res.render("home", {role: req.session.role, user: doc.data(), id: doc.id});
+    res.render("home", {role: req.session.role, user: req.session.user, id: doc.id});
   });
 };
