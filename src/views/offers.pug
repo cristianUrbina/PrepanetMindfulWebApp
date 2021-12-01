@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  if offers 
+  if offers && Object.keys(offers).length > 0
     h1 Ofertas
     table
       tr
@@ -16,4 +16,4 @@ block content
           td #{offer.fecha_fin}
           td #{offer.periodo}
   else
-    h1 No hay ofertas
+    p No hay ofertas disponibles

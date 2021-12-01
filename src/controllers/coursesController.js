@@ -63,19 +63,29 @@ exports.show_offers = async function (req, res, next) {
   });
 };
 
+inscriptionsSnapshots = {};
+
+async function retrieveInscriptions (id) {
+  return new Promise ((resolve, reject) => {
+    db.collection("inscripciones")
+    .where("id_taller", "==", id)
+    .onSnapshot((snapshot) => {
+      inscriptionsSnapshots[id] = snapshot;
+      resolve();
+    });
+  });
+}
+
 exports.course = async function (req, res, next) {
   // A coordinator only can see information about his or her campus
   if (req.session.role == Role.Coordinator) {
     res.redirect("/talleres/taller/" + req.params.courseId + "/" + req.session.user.id_campus);
     return;
   }
-  const snapshot = await db
-    .collection("inscripciones")
-    .where("id_taller", "==", req.params.courseId)
-    .get();
+  await retrieveInscriptions(req.params.courseId); 
   var promises = [];
   var inscriptions = {};
-  snapshot.forEach((doc) => {
+  inscriptionsSnapshots[req.params.courseId].forEach((doc) => {
     promises.push(db.collection("estudiantes").doc(doc.data().id_estudiante).get());
     inscriptions[doc.data().id_estudiante] = doc.data();
   });
