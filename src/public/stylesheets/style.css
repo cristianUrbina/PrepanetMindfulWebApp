@@ -125,6 +125,27 @@ input{
   display: block;
 }
 
+.student_data {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-bottom: 50px;
+}
+
+.student_data>div {
+  background-color: rgba(0,0,0,0.2);
+  width: fit-content;
+}
+.student_data p {
+  padding: 20px;
+  font-size: 1.1rem;
+}
+
+.field {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
 .error{
   height: 50px;
   margin: 20px;

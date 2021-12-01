@@ -1,7 +1,26 @@
 extends layout
 
 block content
-  p Nombre: #{student.nombre_completo} 
-  p Matrícula: #{student.matricula} 
-  p Campus: #{student.id_campus}
-  p Coordinador: #{student.coordinador} 
+  div.student_data
+    div
+      p <span class="field">Nombre:</span> #{student.nombre_completo} 
+      p <span class="field">Matrícula:</span> #{student.matricula} 
+      p <span class="field">Campus:</span> #{student.id_campus}
+      p <span class="field">Coordinador:</span> #{student.coordinador} 
+  h2 Estatus de cada curso
+  table
+    tr
+      th Liderazgo Positivo y Transformación Personal
+      th Mis habilidades y motivaciones
+      th Mis emociones
+      th Mis relaciones
+      th Mis áreas de oportunidad
+      th Mis metas
+    tr 
+      td #{status[0]}
+      td #{status[1]}
+      td #{status[2]}
+      td #{status[3]}
+      td #{status[4]}
+      td #{status[5]}
+

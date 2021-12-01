@@ -12,7 +12,7 @@ exports.show_profile = async function (req, res, next) {
         db.collection("coordinadores").doc(doc.data().id_coordinador).get().then((coord) => {
           const user = doc.data();
           user.coordinador = coord.data().nombre_completo;
-          res.render("profile", { role: req.session.role, student: user });
+          res.render("profile", { role: req.session.role, student: user, status: doc.data().estatus_cursos });
         });
       }
     });
